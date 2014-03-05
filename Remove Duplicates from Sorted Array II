@@ -17,6 +17,11 @@ public:
     
         if (n < 3) return n;
         
+        
+        /*
+         * 1. everytime cur step forward , we should copy the value on next pos;
+         * 2. the judgement sequence of the conditions is importent.
+        */
         for (cur = A, next = cur+1, duplicateCountOfCur = 1; next != A+n; next++) {
             if (duplicateCountOfCur != 2) {
                 if (*cur == *next)  
