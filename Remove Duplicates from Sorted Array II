@@ -1,0 +1,36 @@
+Follow up for "Remove Duplicates":
+What if duplicates are allowed at most twice?
+
+For example,
+Given sorted array A = [1,1,1,2,2,3],
+
+Your function should return length = 5, and A is now [1,1,2,2,3].
+
+
+my answers:
+
+class Solution {
+public:
+    int removeDuplicates(int A[], int n) {
+        int *cur, *next;
+        int duplicateCountOfCur;
+    
+        if (n < 3) return n;
+        
+        for (cur = A, next = cur+1, duplicateCountOfCur = 1; next != A+n; next++) {
+            if (duplicateCountOfCur != 2) {
+                if (*cur == *next)  
+                    duplicateCountOfCur += 1;
+                cur++;
+                *cur = *next;
+            }
+            else if (*cur != *next) {
+                duplicateCountOfCur = 1; // 重新开始
+                cur++;
+                *cur = *next;
+            }
+        }
+        
+        return cur - A + 1;
+    }
+};
