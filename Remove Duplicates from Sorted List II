@@ -1,0 +1,55 @@
+Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+
+For example,
+Given 1->2->3->3->4->4->5, return 1->2->5.
+Given 1->1->1->2->3, return 2->3.
+
+my answer:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *deleteDuplicates(ListNode *head) {
+        ListNode** pCur = &head;
+		ListNode* pNxt = NULL;
+		ListNode* entry = NULL;
+		bool needDeleteCur = false;
+		
+		while ( *pCur ) {
+			entry = *pCur;
+			pNxt = entry->next;
+			if ( needDeleteCur ) {
+				if ( pNxt != NULL && entry->val != pNxt->val ) {
+					needDeleteCur = false;
+				}
+				delete entry;
+				*pCur = pNxt;
+			}
+			else {
+				if ( pNxt != NULL && entry->val == pNxt->val ) {
+					needDeleteCur = true;
+					delete entry;
+					*pCur = pNxt;
+				}
+				else {
+				    pCur = &(entry->next);
+				}
+				
+			}
+			
+		}
+		
+		return head;
+    }
+};
+
+总结：
+  在编写过程中发现还是没有完全理解二级指针的问题。
+  该题和Remove Duplicates from Sorted List I的不同在于当前考察的节点也有可能需要被删除，所以需要以从前往后的角度来看待。
