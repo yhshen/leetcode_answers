@@ -1,0 +1,70 @@
+Given a sorted linked list, delete all duplicates such that each element appear only once.
+
+For example,
+Given 1->1->2, return 1->2.
+Given 1->1->2->3->3, return 1->2->3.
+
+my answer:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *deleteDuplicates(ListNode *head) {
+        ListNode** cur = &head;
+		
+		    while ( *cur && (*cur)->next) {
+			     if ((*cur)->val == (*cur)->next->val) {
+				   ListNode* del= (*cur)->next;
+				   (*cur)->next = del->next;
+				   delete del;
+			  }
+			  else {
+				   cur = &((*cur)->next);
+			  }
+		    }
+		
+		    return head;   
+    }
+};
+
+other's answer:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *deleteDuplicates(ListNode *head) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        ListNode **pCur = &head;
+        ListNode *pPre = NULL;
+        ListNode *entry = NULL;
+        while (*pCur != NULL) {
+            entry = *pCur;
+            if (pPre != NULL && pPre->val == entry->val) {
+                *pCur = entry->next;
+                delete entry;
+                entry = NULL;
+            } else {
+                pCur = &(entry->next);
+                pPre = entry;
+            }
+        }
+        return head;
+    }
+};
+
+总结： 两种解法的基准不同，我是从前和后比较，他是从后和前比较。
