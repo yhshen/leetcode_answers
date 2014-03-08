@@ -1,0 +1,80 @@
+Given a non-negative number represented as an array of digits, plus one to the number.
+
+The digits are stored such that the most significant digit is at the head of the list.
+
+my answer:
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int> &digits) {
+        int nxt = 1;
+        for (vector<int>::reverse_iterator riter = digits.rbegin(); riter != digits.rend(); riter++) {
+            int sum = *riter + nxt;
+            nxt = sum / 10;
+            *riter = sum % 10;
+        }
+        
+        if (nxt) {
+            digits.insert(digits.begin(), nxt);
+        }
+        return digits;
+    }
+};
+
+
+other's answer:
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int> &digits) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<int> ret;
+        int nxt = 1;
+        for (int i = digits.size() - 1; i >= 0; i--) {
+            digits[i] += nxt;
+            if (digits[i] == 10) {
+                digits[i] = 0;
+                nxt = 1;
+            } else {
+                nxt = 0;
+                break;
+            }
+        }
+        if (nxt) {
+            ret.push_back(1);
+        }
+        for (int i = 0; i < digits.size(); i++) {
+            ret.push_back(digits[i]);
+        }
+        return ret;
+    }
+};
+
+从我的初始版本和别人的版本中，可以看出：
+我的版本的效率有问题，主要在于对于加1操作，如果发现进位为0时，就不需要进行接下来的遍历了。
+出现以上问题的原因在于没有将该题和链表求和的问题区分清楚。
+
+revised edtion:
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int> &digits) {
+        int nxt = 1;
+        for (vector<int>::reverse_iterator riter = digits.rbegin(); riter != digits.rend(); riter++) {
+            int sum = *riter + nxt;
+            nxt = sum / 10;
+            *riter = sum % 10;
+            if (!nxt) break; // !!!!!!!!!!!!!!!!!!!!!!
+        }
+        
+        if (nxt) {
+            digits.insert(digits.begin(), nxt);
+        }
+        return digits;
+    }
+};
+
+
+总结：
+  一定要分析清楚问题，而且要注意和遇到的问题的区别。
