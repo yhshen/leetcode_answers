@@ -1,0 +1,75 @@
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+
+my answers:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
+        ListNode* result = NULL;
+		ListNode** pCur = &result;
+		
+		
+		while (l1 && l2){
+			if  (l1->val < l2->val) {
+				*pCur = l1;
+				l1 = l1->next;
+			}
+			else {
+				*pCur = l2;
+				l2 =l2->next;
+			}
+			pCur = &((*pCur)->next);
+		}
+		*pCur = NULL;
+		
+		if (l1) {
+			*pCur = l1;
+		}
+		if (l2) {
+			*pCur = l2;
+		}
+		return result;    
+    }
+};
+
+other's answer:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        ListNode *ret = NULL;
+        ListNode **pCur = &ret;
+        while (l1 && l2) {
+            if (l1->val < l2->val) {
+                *pCur = l1;
+                l1 = l1->next;
+            } else {
+                *pCur = l2;
+                l2 = l2->next;
+            }
+            pCur = &((*pCur)->next);
+        }
+        *pCur = (l1 == NULL) ? l2 : l1;
+        return ret;
+    }
+};
+
+总结：两段代码思想一直，但是我的代码还是不够精简。
