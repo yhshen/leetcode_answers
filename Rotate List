@@ -1,0 +1,77 @@
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+For example:
+Given 1->2->3->4->5->NULL and k = 2,
+return 4->5->1->2->3->NULL.
+
+my answer:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *rotateRight(ListNode *head, int k) {
+        int i = 0;
+		int numberOfRotate = 0;
+		int fromHead = 0;
+		ListNode** pEnd = &head;
+		ListNode** pRotateHead = &head;
+		ListNode* entry = NULL;
+		
+		if (k == 0) return head;
+		
+		for ( ; *pEnd != NULL; i++) {
+			pEnd = &((*pEnd)->next);
+		}
+		if ( i == 0 || i == 1) return head;
+		numberOfRotate = k % i;
+		if (numberOfRotate == 0) return head;
+		fromHead = i - numberOfRotate;
+		
+		while (fromHead != 0) {
+			pRotateHead= &((*pRotateHead)->next);
+			fromHead--;
+		}
+		entry = head;
+		head = *pRotateHead;
+		*pRotateHead = NULL;
+		*pEnd = entry;
+		
+		return head;  
+    }
+};
+
+other's answer:
+
+class Solution {
+public:
+    ListNode *rotateRight(ListNode *head, int k) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (head == NULL || k == 0) {
+            return head;
+        }
+        int len = 1;
+        ListNode *pTail = head;
+        while (pTail->next) {
+            pTail = pTail->next;
+            len++;
+        }
+        k = (len - (k % len)) % len;
+        pTail->next = head;
+        while (k--) {
+            pTail = pTail->next;
+        }
+        head = pTail->next;
+        pTail->next = NULL;
+        return head;
+    }
+};
+
+总结： 我的代码要比别人的要长，而他的代码的思想就是将链表改成单循环链表来处理。
