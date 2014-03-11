@@ -1,0 +1,66 @@
+Sort a linked list using insertion sort.
+
+my answers:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *insertionSortList(ListNode *head) {
+        ListNode ** node = NULL;
+		ListNode * cur = NULL;
+		if (head == NULL) return head;
+		for (ListNode** pCur = &(head->next);
+				*pCur != NULL; ) {
+			node = &head;
+			while ((node != pCur) && 
+							((*node)->val < (*pCur)->val)) 
+				node = &((*node)->next);
+			if (node == pCur) {
+			    pCur = &((*pCur)->next);  
+			    continue;
+			}
+			cur = *pCur;
+			*pCur = cur->next;
+			cur->next = *node;
+			*node = cur;			
+		}
+		return head;    
+    }
+};
+
+other's answer:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *insertionSortList(ListNode *head) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        ListNode *ret = NULL, *tmp = head, *nxt = NULL;
+        ListNode **pCur = &ret;
+        while (tmp) {
+            pCur = &ret;
+            while (*pCur && (*pCur)->val <= tmp->val)
+                pCur = &((*pCur)->next);
+            nxt = tmp->next;
+            tmp->next = *pCur;
+            *pCur = tmp;
+            tmp = nxt;
+        }
+        return ret;
+    }
+};
